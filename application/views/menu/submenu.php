@@ -40,8 +40,8 @@
                 <td><?= $sm['is_active']; ?></td>
                 
                 <td>
-                <a href="" class="badge badge-success" data-toggle="modal" data-target="#editModal">edit</a>
-                <a href="" class="badge badge-danger" onclick="return confirm('yakin?');">hapus </a>
+                <a href="<?= base_url(); ?>menu/editsubmenu/<?= $sm['id']; ?>" class="badge badge-success">edit</a>
+                <a href=" <?= base_url(); ?>menu/hapussm/<?= $sm['id']; ?>" class="badge badge-danger" onclick="return confirm('yakin?');">hapus </a>
                 </td>
                 
                    

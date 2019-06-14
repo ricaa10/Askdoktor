@@ -32,17 +32,17 @@
             </thead>
             <tbody>
             <?php $i = 1; ?>
-            <?php foreach ($Pasien as $p) : ?>
+            <?php foreach ($pasien as $p) : ?>
              <tr>
                 <th scope="row"><?= $i; ?></th>
-                <td><?= $p['nama_lengkap']; ?></td>
-                <td><?= $p['jenis_kelamin']; ?></td>
+                <td><?= $p['nama']; ?></td>
+                <td><?= $p['jkel']; ?></td>
                 <td><?= $p['telepon']; ?></td>
                 <td><?= $p['alamat']; ?></td>
                 <td><?= $p['tanggal_lahir']; ?></td>
                 <td><?= $p['tanggal_daftar']; ?></td>
                 <td>
-                <a href="" class="badge badge-success" data-toggle="modal" data-target="#editModal">edit</a>
+                <a href="<?= base_url(); ?>admin/editpasien/<?= $p['id']; ?>" class="badge badge-success">edit</a>
                 <a href=" <?= base_url(); ?>admin/hapusp/<?= $p['id']; ?>" class="badge badge-danger" onclick="return confirm('yakin?');">hapus </a>
                 </td>
                 
@@ -80,13 +80,13 @@
 
       <div class="form-group">
       <select class="form-control" id="jkel" name="jkel"><option value="">Jenis Kelamin</option>
-        <option value="">Pria </option>
-        <option value="">Wanita </option>
+        <option value="L">Pria </option>
+        <option value="P">Wanita </option>
       </select>
       </div>
 
       <div class="form-group">
-      <input type="text" class="form-control" id="telp" name="telp" placeholder="Nomor Telepon">
+      <input type="text" class="form-control" id="telepon" name="telepon" placeholder="Nomor Telepon">
       </div>
 
       <div class="form-group">
@@ -94,7 +94,7 @@
       </div>
 
       <div class="form-group">
-      <input placeholder="Tgl lahir" class="form-control" type="text" onfocus="(this.type='date')" id="tgll">
+      <input placeholder="Tgl lahir" class="form-control" name="tanggal_lahir" type="text" onfocus="(this.type='date')" id="tanggal_lahir">
       </div>
 
     </div>

@@ -219,29 +219,34 @@ class Admin extends CI_Controller {
         }
     }
 
-     public function ubahObat($id)
-        {
-            $data['title'] = 'Ubah Data Obat';
-            $data['obat'] = $this->Admin_model->getObatById($id);
-            
+    public function editobat($id)
+    {
+        $data['title'] = 'Edit Obat';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['tabel_obat'] = $this->Admin_model->getObatById($id);
 
-            $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
-            $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
-            $this->form_validation->set_rules('kategori', 'Kategori', 'trim|required');
+        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required|trim');
+        $this->form_validation->set_rules('kategori', 'Kategori', 'required|trim');
 
-            if ($this->form_validation->run() == FALSE) {
-                $this->load->view('templates/header', $data);
-                $this->load->view('templates/sidebar', $data);
-                $this->load->view('templates/topbar', $data);
-                $this->load->view('admin/obat', $data);
-                $this->load->view('templates/footer'); 
-            } else {
-                $this->Mahasiswa_model->ubahDataObat();
-                $this->session->set_flashdata('flash', 'Diubah');
-                redirect('admin/obat');
+        if($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/editobat', $data);
+            $this->load->view('templates/footer');
+
+        }else{
+           
             
-            }
+            $this->Admin_model->ubahDataObat();
+           $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data obat berhasil diubah!</div>');
+            redirect('admin/obat');
         }
+
+        
+    }
+
 
 
      public function hapusObat($id)
@@ -256,7 +261,7 @@ class Admin extends CI_Controller {
         $data['title'] = 'Pasien';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data['Pasien'] = $this->Admin_model->getAllPasien();
+        $data['pasien'] = $this->Admin_model->getAllPasien();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -272,10 +277,9 @@ class Admin extends CI_Controller {
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $this->form_validation->set_rules('nama', 'Nama', 'required');
         $this->form_validation->set_rules('jkel', 'Jkel', 'required');
-        $this->form_validation->set_rules('telp', 'Telp', 'required');
+        $this->form_validation->set_rules('telepon', 'Telepon', 'required');
         $this->form_validation->set_rules('alamat', 'Alamat', 'required');
-        $this->form_validation->set_rules('tgll', 'Tgll', 'required');
-         $this->form_validation->set_rules('tgld', 'Tgld', 'required');
+        $this->form_validation->set_rules('tanggal_lahir', 'Tanggal_lahir', 'required');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -286,36 +290,51 @@ class Admin extends CI_Controller {
              $this->load->view('templates/footer');
         } else {
             $this->Admin_model->tambahDataPasien();
-            $this->session->set_flashdata('flash', 'Ditambahkan');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data pasien baru telah ditambahkan!</div>');
             redirect('admin/pasien');
         
         }
     }
 
+
+    public function editpasien($id)
+    {
+        $data['title'] = 'Edit Pasien';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['pasien'] = $this->Admin_model->getPasienById($id);
+        $data['jkel'] = ['L','P'];
+
+        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        $this->form_validation->set_rules('jkel', 'Jkel', 'required|trim');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
+        $this->form_validation->set_rules('telepon', 'Telepon', 'required|trim');
+
+        if($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/editpasien', $data);
+            $this->load->view('templates/footer');
+
+        }else{
+           
+            
+            $this->Admin_model->ubahDataPasien();
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data pasien berhasil diubah!</div>');
+            redirect('admin/pasien');
+        }
+
+        
+    }
+
+
      public function hapusp($id)
     {
         $this->Admin_model->hapusDataPasien($id);
-        $this->session->set_flashdata('flash','dihapus');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data pasien berhasil dihapus!</div>');
         redirect('admin/pasien');
     }
 
-    public function mahasiswa()
-    {
-        $this->load->model('Mahasiswa_model');
-        $this->load->library('form_validation');
-        $data['title'] = 'Mahasiswa';
-        $data['mahasiswa'] = $this->Mahasiswa_model->getAllMahasiswa();
-        if( $this->input->post('keyword') ) {
-            $data['mahasiswa'] = $this->Mahasiswa_model->cariDataMahasiswa();
-        }
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        
-        $this->load->view('mahasiswa/index', $data);
-        $this->load->view('templates/footer');
-        
-
-    }
 
 
 }

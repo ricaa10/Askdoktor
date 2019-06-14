@@ -8,6 +8,36 @@ class Admin_model extends CI_Model {
 		return $data->result_array();
 
 	}
+
+    public function tambahDataPasien()
+    {
+        $date = date('Y-m-d h:i:s');
+        $data = [
+            "nama" => $this->input->post('nama', true),
+            "jkel" => $this->input->post('jkel'),
+            "telepon" => $this->input->post('telepon',true),
+            "alamat" => $this->input->post('alamat',true),
+            "tanggal_lahir" => $this->input->post('tanggal_lahir'),
+            "tanggal_daftar" => $date        
+    
+        ];
+
+        $this->db->insert('pasien', $data);
+    }
+
+    public function ubahDataPasien()
+    {
+        $data = [
+            "nama" => $this->input->post('nama', true),
+            "jkel" => $this->input->post('jkel'),
+            "telepon" => $this->input->post('telepon', true),
+            "alamat" => $this->input->post('alamat',true),
+            "tanggal_lahir" => $this->input->post('tanggal_lahir')
+           
+        ];
+        $this->db->where('id', $this->input->post('id'));
+        $this->db->update('pasien', $data);
+    }
 	
 	public function hapusDataPasien($id)
 	{
@@ -19,6 +49,12 @@ class Admin_model extends CI_Model {
     public function getObatById($id)
     {
         return $this->db->get_where('tabel_obat', ['id' => $id])->row_array();
+    }
+
+    
+    public function getPasienById($id)
+    {
+        return $this->db->get_where('pasien', ['id' => $id])->row_array();
     }
 
     public function tambahArtikel()
@@ -64,6 +100,18 @@ class Admin_model extends CI_Model {
         ];
         $this->db->where('id', $this->input->post('id'));
         $this->db->update('artikel', $data);
+    }
+
+    public function ubahDataObat()
+    {
+        $data = [
+            "nama" => $this->input->post('nama'),
+            "keterangan" => $this->input->post('keterangan'),
+            "kategori" => $this->input->post('kategori')
+          
+        ];
+        $this->db->where('id', $this->input->post('id'));
+        $this->db->update('tabel_obat', $data);
     }
 
 

@@ -36,7 +36,7 @@
                 <td><?= substr($o['keterangan'],0,200).' ...'; ?></td>
                 <td><?= $o['kategori']; ?></td>
                 <td>
-                <a href="<?= base_url(); ?>admin/editObat/<?= $o['id']; ?>" class="badge badge-success"  data-toggle="modal" data-target="#editModal">edit</a>
+                <a href="<?= base_url(); ?>admin/editobat/<?= $o['id']; ?>" class="badge badge-success">edit</a>
                 <a href="<?= base_url(); ?>admin/hapusObat/<?= $o['id']; ?>" class="badge badge-danger" onclick="return confirm('yakin?');">hapus </a>
                 </td>
                 
@@ -90,39 +90,5 @@
   </div>
 </div>
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit Data Obat</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="<?= base_url('admin/editObat'); ?>" method="post">
-      <div class="modal-body">
-        
-      <div class="form-group">
-      <label for="nama">Nama Obat</label>
-      <input type="text" class="form-control" id="nama" name="nama" value="<?= $o['nama'];?>">
-      </div>
-
-      <div class="form-group">
-      <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Keterangan Obat">
-      </div>
-
-      <div class="form-group">
-      <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Kategori Obat">
-      </div>
-    </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        <button type="simpan" class="btn btn-primary">Simpan</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 

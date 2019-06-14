@@ -74,5 +74,41 @@ class Menu extends CI_Controller {
             redirect('menu/submenu');
         }
     }
+
+    public function editsubmenu($id)
+    {
+        $data['title'] = 'Edit submenu';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user_sub_menu'] = $this->menu->getSubMenuById($id);
+         $data['SubMenu'] = $this->menu->getSubMenu();
+         $data['menu'] = $this->db->get('user_menu')->result_array();
+       
+        // $this->form_validation->set_rules('nama','Nama', 'required');
+        $this->form_validation->set_rules('menu_id','Menu', 'required');
+        $this->form_validation->set_rules('url','URL', 'required');
+        $this->form_validation->set_rules('icon','icon', 'required');
+        
+        if($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/editsubmenu', $data);
+            $this->load->view('templates/footer');
+        }else{       
+            $this->menu->ubahDataSubMenu();
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Submenu berhasil diubah!</div>');
+            redirect('menu/submenu');
+        }
+
+        
+    }
+
+
+    public function hapussm($id)
+    {
+        $this->menu->hapusDataSubMenu($id);
+        $this->session->set_flashdata('flash','dihapus');
+        redirect('menu/submenu');
+    }
         
 }
