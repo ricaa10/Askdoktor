@@ -336,5 +336,84 @@ class Admin extends CI_Controller {
     }
 
 
+     public function jadwal()
+    {
+        $data['title'] = 'Jadwal';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['Jadwal'] = $this->db->get('jadwal')->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/jadwal', $data);
+        $this->load->view('templates/footer');
+       
+    }
+
+    public function tambahJadwal()
+    {
+        $data['title'] = 'Tambah Jadwal';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+        $this->form_validation->set_rules('spesialis', 'Spesialis', 'trim|required');
+        $this->form_validation->set_rules('hari', 'Hari', 'trim|required');
+         $this->form_validation->set_rules('jam', 'Jam', 'trim|required');
+
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/jadwal', $data);
+            $this->load->view('templates/footer'); 
+        } else {
+            $this->Admin_model->tambahJadwal();
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Jadwal baru telah ditambahkan!</div>');
+            redirect('admin/jadwal');
+        
+        }
+    }
+
+
+    public function hapusJadwal($id)
+    {
+        $this->Admin_model->hapusDataJadwal($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Jadwal berhasil dihapus.</div>');
+        redirect('admin/jadwal');
+    }
+
+
+    public function editjadwal($id)
+    {
+        $data['title'] = 'Edit Jadwal';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['jadwal'] = $this->Admin_model->getJadwalById($id);
+
+         $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+        $this->form_validation->set_rules('spesialis', 'Spesialis', 'trim|required');
+        $this->form_validation->set_rules('hari', 'Hari', 'trim|required');
+         $this->form_validation->set_rules('jam', 'Jam', 'trim|required');
+
+        if($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/editjadwal', $data);
+            $this->load->view('templates/footer');
+
+        }else{
+           
+            
+            $this->Admin_model->ubahDataJadwal();
+           $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Jadwal berhasil diubah!</div>');
+            redirect('admin/jadwal');
+        }
+
+        
+    }
+
+
 
 }

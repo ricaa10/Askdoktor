@@ -141,6 +141,43 @@ class Admin_model extends CI_Model {
 		$this->db->delete('artikel');
     }
 
+     public function getJadwalById($id)
+    {
+        return $this->db->get_where('jadwal', ['id' => $id])->row_array();
+    }
+
+     public function tambahJadwal()
+    {
+        $data = [
+            "nama" => $this->input->post('nama', true),
+            "spesialis" => $this->input->post('spesialis',true),
+            "hari" => $this->input->post('hari',true),
+            "jam" => $this->input->post('jam',true)
+    
+        ];
+
+        $this->db->insert('jadwal', $data);
+    }
+
+    public function hapusDataJadwal($id)
+    {
+       
+        $this->db->where('id', $id);
+        $this->db->delete('jadwal');
+    }
+
+    public function ubahDataJadwal()
+    {
+        $data = [
+           "nama" => $this->input->post('nama', true),
+            "spesialis" => $this->input->post('spesialis',true),
+            "hari" => $this->input->post('hari',true),
+            "jam" => $this->input->post('jam',true)
+          
+        ];
+        $this->db->where('id', $this->input->post('id'));
+        $this->db->update('jadwal', $data);
+    }
  
     
 }
