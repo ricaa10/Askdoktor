@@ -120,23 +120,25 @@ class Admin extends CI_Controller {
     }
 
 
-    public function editArtikel($id)
+    public function editartikel($id)
    {
         $data['title'] = 'Edit Artikel';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['artikel'] = $this->db->get_where('artikel', ['id' => $id])->row_array();
 
-        $data['artikel'] = $this->Admin_model->getArtikelById($id);
         $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
 
         if($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
-            $this->load->view('admin/editArtikel', $data);
+            $this->load->view('admin/editartikel', $data);
             $this->load->view('templates/footer');
 
         }else{
-            $judul = $this->input->post('judul');
+         
+             $judul = $this->input->post('judul');
+              $id = $this->input->post('id');
             
             //cek jika ada gambar diupload
             // $upload_image = $_FILES['image']['name'];
@@ -145,7 +147,7 @@ class Admin extends CI_Controller {
             // if ($upload_image) {
             //     $config['allowed_types']  = 'gif|jpg|png';
             //     $config['max_size']       = '2048';
-            //     $config['upload_path']    = './assets/img/profile/';
+            //     $config['upload_path']    = './assets/img/artikel/';
 
             //     $this->load->library('upload', $config);
            
@@ -153,7 +155,7 @@ class Admin extends CI_Controller {
             //     if($this->upload->do_upload('image')) {
             //         $old_image = $data['user']['image'];
             //         if ($old_image != 'default.jpg') {
-            //             unlink(FCPATH . 'assets/img/profile/' . $old_image);
+            //             unlink(FCPATH . 'assets/img/artikel/' . $old_image);
             //         }
             //         $new_image = $this->upload->data('file_name');
             //         $this->db->set('image', $new_image);
@@ -162,12 +164,11 @@ class Admin extends CI_Controller {
             //     }
             // }
             
-            $this->db->set('name', $name);
-            $this->db->where('email', $email);
-            $this->db->update('user'); //pakai model
-
-            $this->session->set_flashdata('message','<div class="alert alert-success" role="alert"> Profil Berhasil Diperbaharui!</div>');
-            redirect('user');
+            $this->db->set('judul', $judul);
+            $this->db->where('id', $id);
+            $this->db->update('artikel'); //pakai model
+             $this->session->set_flashdata('message','<div class="alert alert-success" role="alert"> Artikel Berhasil Diperbaharui!</div>');
+            redirect('admin/artikel');
         }
 
         

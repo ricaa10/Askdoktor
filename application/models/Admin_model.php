@@ -94,12 +94,40 @@ class Admin_model extends CI_Model {
 
     public function ubahDataArtikel()
     {
-        $data = [
-            "judul" => $this->input->post('judul', true)
-          
-        ];
-        $this->db->where('id', $this->input->post('id'));
-        $this->db->update('artikel', $data);
+        $date = date('Y-m-d');
+          $data = [
+           'judul' => $this->input->post('judul'), 
+           'isi' => $this->input->post('isi'),
+           'tgl_update' => $date
+       ];
+        
+            //cek jika ada gambar diupload
+            $upload_image = $_FILES['image']['name'];
+            
+
+            if ($upload_image) {
+                $config['allowed_types']  = 'gif|jpg|png';
+                $config['max_size']       = '2048';
+                $config['upload_path']    = './assets/img/artikel/';
+
+                $this->load->library('upload', $config);
+           
+                
+                if($this->upload->do_upload('image')) {
+                    // $old_image = $data['id']['image'];
+                   
+                    //     unlink(FCPATH . 'assets/img/artikel/' . $old_image);
+                    
+                    $new_image = $this->upload->data('file_name');
+                    $this->db->set('image', $new_image);
+                }else{
+                    echo $this->upload->display_errors();
+                }
+            }
+            
+           
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('artikel', $data);
     }
 
     public function ubahDataObat()

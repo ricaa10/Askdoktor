@@ -45,7 +45,7 @@
                  <td><?= $a['kunjungan']; ?></td>
                 
                 <td>
-                <a href="<?= base_url(); ?>admin/editArtikel/<?= $a['id']; ?> "class="badge badge-success">edit </a>
+                <a href="<?= base_url(); ?>admin/editartikel/<?= $a['id']; ?> "class="badge badge-success">edit </a>
                 <a href="<?= base_url(); ?>admin/hapusArtikel/<?= $a['id']; ?>" class="badge badge-danger" onclick="return confirm('yakin?');">hapus </a>
                 </td>
                 
