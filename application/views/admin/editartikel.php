@@ -7,9 +7,8 @@
 <div class="row">
   <div class="col-lg-8">
 
-     <?= form_open_multipart('admin/editartikel'); ?>
-   
-    
+     <form action="" method="post" >
+    <input type="hidden" name="id" value=" <?= $artikel['id'];?>">
    <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label">Judul</label>
     <div class="col-sm-10">

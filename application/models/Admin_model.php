@@ -87,6 +87,8 @@ class Admin_model extends CI_Model {
     }
 
 
+
+
    public function getArtikelById($id)
     {
         return $this->db->get_where('artikel', ['id' => $id])->row_array();
@@ -94,41 +96,34 @@ class Admin_model extends CI_Model {
 
     public function ubahDataArtikel()
     {
-        $date = date('Y-m-d');
-          $data = [
-           'judul' => $this->input->post('judul'), 
-           'isi' => $this->input->post('isi'),
-           'tgl_update' => $date
-       ];
-        
-            //cek jika ada gambar diupload
-            $upload_image = $_FILES['image']['name'];
-            
+         $date = date('Y-m-d');
+        $data = ["judul" => $this->input->post('judul'),
+                "isi" => $this->input->post('isi'),
+                "tgl_update" => $date];
 
-            if ($upload_image) {
-                $config['allowed_types']  = 'gif|jpg|png';
-                $config['max_size']       = '2048';
-                $config['upload_path']    = './assets/img/artikel/';
+        //cek jika ada gambar diupload
+        $upload_image = $_FILES['image']['name'];
 
-                $this->load->library('upload', $config);
-           
-                
-                if($this->upload->do_upload('image')) {
-                    // $old_image = $data['id']['image'];
-                   
-                    //     unlink(FCPATH . 'assets/img/artikel/' . $old_image);
-                    
-                    $new_image = $this->upload->data('file_name');
-                    $this->db->set('image', $new_image);
-                }else{
-                    echo $this->upload->display_errors();
-                }
+        if ($upload_image) {
+            $config['allowed_types']  = 'gif|jpg|png';
+            $config['max_size']       = '2048';
+            $config['upload_path']    = './assets/img/artikel/';
+
+            $this->load->library('upload', $config);
+
+            if($this->upload->do_upload('image')){
+                $new_image = $this->upload->data('file_name');
+                $this->db->set('image', $new_image);
+            }else{
+                 echo $this->upload->display_errors();
             }
-            
-           
-            $this->db->where('id', $this->input->post('id'));
-            $this->db->update('artikel', $data);
+
+        }
+
+        $this->db->where('id', $this->input->post('id'));
+        $this->db->update('artikel', $data);
     }
+    
 
     public function ubahDataObat()
     {
@@ -157,14 +152,18 @@ class Admin_model extends CI_Model {
 
     public function hapusDataObat($id)
 	{
-       
+      
 		$this->db->where('id', $id);
 		$this->db->delete('tabel_obat');
     }
 
     public function hapusDataArtikel($id)
 	{
-       
+        // $old_image = $this->getArtikelById($id);
+        // if ($old_image->image != 'default.jpg') {
+        //     $filename = explode(".", $old_image->image)[0];
+        //     return array_map('unlink', glob(FCPATH . "assets/img/artikel/$old_image.*"));
+        // }
 		$this->db->where('id', $id);
 		$this->db->delete('artikel');
     }

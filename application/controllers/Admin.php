@@ -124,9 +124,11 @@ class Admin extends CI_Controller {
    {
         $data['title'] = 'Edit Artikel';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['artikel'] = $this->db->get_where('artikel', ['id' => $id])->row_array();
+        $data['artikel'] = $this->Admin_model->getArtikelById($id);
 
-        $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        $this->form_validation->set_rules('judul', 'Judul', 'required');
+        $this->form_validation->set_rules('isi', 'Isi', 'required');
+
 
         if($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -136,38 +138,10 @@ class Admin extends CI_Controller {
             $this->load->view('templates/footer');
 
         }else{
-         
-             $judul = $this->input->post('judul');
-              $id = $this->input->post('id');
-            
-            //cek jika ada gambar diupload
-            // $upload_image = $_FILES['image']['name'];
-            
-
-            // if ($upload_image) {
-            //     $config['allowed_types']  = 'gif|jpg|png';
-            //     $config['max_size']       = '2048';
-            //     $config['upload_path']    = './assets/img/artikel/';
-
-            //     $this->load->library('upload', $config);
            
-                
-            //     if($this->upload->do_upload('image')) {
-            //         $old_image = $data['user']['image'];
-            //         if ($old_image != 'default.jpg') {
-            //             unlink(FCPATH . 'assets/img/artikel/' . $old_image);
-            //         }
-            //         $new_image = $this->upload->data('file_name');
-            //         $this->db->set('image', $new_image);
-            //     }else{
-            //         echo $this->upload->display_errors();
-            //     }
-            // }
             
-            $this->db->set('judul', $judul);
-            $this->db->where('id', $id);
-            $this->db->update('artikel'); //pakai model
-             $this->session->set_flashdata('message','<div class="alert alert-success" role="alert"> Artikel Berhasil Diperbaharui!</div>');
+            $this->Admin_model->ubahDataArtikel();
+           $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">artikel berhasil diubah!</div>');
             redirect('admin/artikel');
         }
 

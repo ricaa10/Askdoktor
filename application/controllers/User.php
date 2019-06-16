@@ -53,7 +53,7 @@ class User extends CI_Controller {
            
                 
                 if($this->upload->do_upload('image')) {
-                    $old_image = $data['user']['image'];
+                    $old_image = $data['user']['image']; 
                     if ($old_image != 'default.jpg') {
                         unlink(FCPATH . 'assets/img/profile/' . $old_image);
                     }
